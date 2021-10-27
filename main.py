@@ -24,9 +24,6 @@ def get_args() -> dict:
 
 
 def main():
-    # print(get_args())
-    # log.warning("information is read")
-    # print("information is read")
 
     config.read('.config')
     aws_credentials = dict(config['aws_credentials'])

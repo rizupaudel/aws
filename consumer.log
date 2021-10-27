@@ -1,4 +1,4 @@
-2021-10-26 22:56:17 main.py: INFO: Processed: request_type: CREATE; widget_id: e872143a-735b-4610-9d20-9a19267ecd44;)
+2021-10-26 22:56:17 main.py: INFO: Processed: request_type: CREATE; widget_id: e872143a-735b-4610-9d20-9a19267ecd44;
 2021-10-26 22:58:05 main.py: INFO: Processed: request_type: CREATE; widget_id: f03a5dc6-ea2c-429c-a48c-bf0db7bf0c0f;
 2021-10-26 22:59:23 main.py: INFO: Processed: request_type: UPDATE; widget_id: 42761233-b3ff-44c9-97d5-98a4d03ba9f6;
 2021-10-26 22:59:47 main.py: INFO: Processed: request_type: CREATE; widget_id: 6a062cf3-d74c-48c8-accc-d1fdd5a695a2;
