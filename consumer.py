@@ -1,4 +1,4 @@
-from connecter import delete_request, get_db
+from connector import delete_request, get_db
 
 class Consumer:
     def __init__(self, s3, bucket, db) -> None:
@@ -29,21 +29,21 @@ class Consumer:
             key = r[0] if response.get('ResponseMetadata').get('HTTPStatusCode') == 200 else None
         elif request.get('type') == 'update':
             # TODO
-            pass
+            key = r[0]
         elif request.get('type') == 'delete':
             # TODO
-            pass
+            key = r[0]
         else:
             return "Invalid Request Type"
         
         if key:
-            print("Delete: {}".format(delete_request(self.s3, self.bucket.name, key)))
+            resp = delete_request(self.s3, self.bucket.name, key)
+            # print("Delete: {}".format(resp))
         
         return response
         
     def handle_requests(self):
         status = []
-        print(self.request_queue)
         for request in self.request_queue:
             status.append(self.process_request(request))
         return status

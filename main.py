@@ -1,5 +1,6 @@
 import logging as log
 import argparse
+import time
 from connector import *
 from configparser import ConfigParser
 from consumer import Consumer
@@ -7,10 +8,10 @@ from consumer import Consumer
 config = ConfigParser()
 
 LOG_FILE = 'consumer.log'
-LOG_FORMAT = '%(asctime)s %(filename)s: %(message)s'
+LOG_FORMAT = '%(asctime)s %(filename)s: %(levelname)s: %(message)s'
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-log.basicConfig(filename=LOG_FILE, format=LOG_FORMAT, datefmt=DATE_FORMAT)
+log.basicConfig(filename=LOG_FILE, format=LOG_FORMAT, datefmt=DATE_FORMAT, level=log.INFO)
 
 def get_args() -> dict:
     parser = argparse.ArgumentParser(description='Consumer: Process Widget Requests')
@@ -25,6 +26,7 @@ def get_args() -> dict:
 def main():
     # print(get_args())
     # log.warning("information is read")
+    # print("information is read")
 
     config.read('.config')
     aws_credentials = dict(config['aws_credentials'])
@@ -39,11 +41,19 @@ def main():
     # get dynamodb session
     ddb = get_db(session)
 
-    widget_requests = get_requests(request_bucket, 2)
-    for widget_request in widget_requests:
-        cO = Consumer(s3, request_bucket, ddb)
-        cO.add_request_to_queue(widget_request)
-        print(f"Status: {cO.handle_requests()}")
+    while(True):
+        # kasari tanne
+        widget_requests = get_requests(request_bucket, 1)
+
+        # process widget requests 
+        if widget_requests:
+            for wr in widget_requests:
+                cO = Consumer(s3, request_bucket, ddb)
+                cO.add_request_to_queue(wr)
+                cO.handle_requests()
+                log.info(f'Processed: request_type: {wr[1].get("type").upper()}; widget_id: {wr[1].get("widgetId")};')
+        exit()
+        time.sleep(5)
 
     print("-----------------------")
     # read data from dynamodb

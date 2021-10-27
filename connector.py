@@ -17,15 +17,10 @@ def get_db(session):
 def get_db_data(db, table, id):
     return db.Table(table).get_item(Key={'id': id})
 
-
-# [req1, req2] (req1 = producer le geenrate gareko request)
-# [[k, req1], [k, req2]]
-
 def get_requests(bucket, limit=1):
     requests = []
     # get request from bucket and parse it to dict
     for r in bucket.objects.limit(limit):
-        print(r)
         requests.append([r.key, json.loads(r.get()['Body'].read().decode('utf-8'))])
     return requests
 
