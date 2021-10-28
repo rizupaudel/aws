@@ -1,53 +1,37 @@
-from connector import delete_request, get_db
+from connector import *
+from consumer_worker import Worker
+import time
+from log import log
 
-class Consumer:
-    def __init__(self, s3, bucket, db) -> None:
-        self.s3 = s3
-        self.bucket = bucket
-        self.db = db
-        self.request_queue = []
-
-    def get_db_data(self, r):
-        db_data = {}
-        for k, v in r.items():
-            if k not in ['type', 'requestId']:
-                if k != 'otherAttributes':
-                    if k == 'widgetId':
-                        k = 'id'
-                    db_data[k] = v
-                else:
-                    for each_attr in v:
-                        db_data[each_attr.get('name')] = each_attr.get('value')
-        return db_data
-
-    def process_request(self, r):
-        key = None
-        request = r[1]
-        response = False
-        if request.get('type') == 'create':
-            response = self.db.Table('widgets').put_item(Item=self.get_db_data(request))
-            key = r[0] if response.get('ResponseMetadata').get('HTTPStatusCode') == 200 else None
-        elif request.get('type') == 'update':
-            # TODO
-            key = r[0]
-        elif request.get('type') == 'delete':
-            # TODO
-            key = r[0]
-        else:
-            return "Invalid Request Type"
-        
-        if key:
-            resp = delete_request(self.s3, self.bucket.name, key)
-            # print("Delete: {}".format(resp))
-        
-        return response
-        
-    def handle_requests(self):
-        status = []
-        for request in self.request_queue:
-            status.append(self.process_request(request))
-        return status
-        
-    def add_request_to_queue(self, r):
-        self.request_queue.append(r)
+def consumer(args, aws_credentials, request_bucket_name, table_name):
+    session = get_aws_session(aws_credentials)
     
+    s3 = session.resource(args.get('resource'))
+
+    request_bucket = get_bucket(s3, request_bucket_name)
+
+    if args.get('storage_strategy') == 'ddb':
+        # get dynamodb session
+        ddb = get_db(session)
+    else:
+        print(f"TODO: {args.get('storage_strategy')} storage strategy. :)")
+
+    while(True):
+
+        # widget_requests = get_one_requests(request_bucket, 1)
+        widget_requests = get_requests(request_bucket)
+
+        # process widget requests 
+        if widget_requests:
+            for wr in widget_requests:
+                cO = Worker(s3, request_bucket, ddb, table_name)
+                cO.add_to_queue(wr)
+                cO.handle_requests()
+                log.info(f'Processed: {wr[1].get("type").upper()}; {wr[1].get("widgetId")};')
+        
+        time.sleep(5)
+        log.info('Sleeping for next 5 seconds.')
+
+    print("-----------------------")
+    # read data from dynamodb
+    # print(get_db_data(ddb, 'widgets', 'f2568720-583c-44da-ad63-4d8f13bfe04b')['Item'])

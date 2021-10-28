@@ -17,13 +17,19 @@ def get_db(session):
 def get_db_data(db, table, id):
     return db.Table(table).get_item(Key={'id': id})
 
-def get_requests(bucket, limit=1):
+# def get_one_requests(bucket, limit=1):
+#     requests = []
+#     # get request from bucket and parse it to dict
+#     for r in bucket.objects.limit(limit):
+#         requests.append([r.key, json.loads(r.get()['Body'].read().decode('utf-8'))])
+#     return requests
+
+def get_requests(bucket):
     requests = []
     # get request from bucket and parse it to dict
-    for r in bucket.objects.limit(limit):
+    for r in bucket.objects.all():
         requests.append([r.key, json.loads(r.get()['Body'].read().decode('utf-8'))])
     return requests
-
 
 def delete_request(s3, bucket_name, key):
     delete_object = s3.Object(bucket_name, key)
