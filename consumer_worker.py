@@ -1,45 +1,85 @@
-from connector import delete_request
+from connector import add_to_bucket, add_to_ddb, remove_from_bucket, remove_from_ddb, remove_from_queue
 
 class Worker:
-    def __init__(self, s3, bucket, db, table_name) -> None:
-        self.s3 = s3
+    def __init__(self, session, bucket, storage_strategy, requests_resource) -> None:
+        self.session = session
+        self.s3_resource = session.resource('s3')
+        self.s3_client = session.client('s3')
         self.bucket = bucket
-        self.db = db
-        self.table_name = table_name
+        self.storage_strategy = storage_strategy
+        self.requests_resource = requests_resource
         self.request_queue = []
     
-    def get_db_data(self, r) -> dict:
+    def set_ddb_info(self, ddb, table_name):
+        self.ddb = ddb
+        self.table_name = table_name
+    
+    def set_s3_storage_info(self, bucket_name):
+        self.storage_bucket_name = bucket_name
+
+    def set_s3_resource_info(self, bucket_name):
+        self.storage_bucket_name = bucket_name
+    
+    def set_sqs_resource_info(self, queue_url):
+        self.queue_url = queue_url
+        self.sqs_client = self.session.client('sqs')
+
+    def prepare_db_data(self, r):
+        owner = ""
+        widget_id = ""
         db_data = {}
         for k, v in r.items():
             if k not in ['type', 'requestId']:
                 if k != 'otherAttributes':
+                    if k == 'owner':
+                        owner = v.lower().strip().replace(' ', '-')
                     if k == 'widgetId':
+                        widget_id = v
                         k = 'id'
                     db_data[k] = v
                 else:
                     for each_attr in v:
                         db_data[each_attr.get('name')] = each_attr.get('value')
-        return db_data
+        
+        widget_key = f'widgets/{owner}/{widget_id}.json'
+
+        return widget_key, db_data
 
     def process_request(self, r):
         key = None
         request = r[1]
         response = False
+
+        widget_key, data = self.prepare_db_data(request)
+
         if request.get('type') == 'create':
-            response = self.db.Table(self.table_name).put_item(Item=self.get_db_data(request))
+            if self.storage_strategy=='ddb':
+                response = add_to_ddb(self.ddb, self.table_name, data)
+            elif self.storage_strategy=='s3':
+                response = add_to_bucket(self.s3_client, self.storage_bucket_name, data, widget_key)
             key = r[0] if response.get('ResponseMetadata').get('HTTPStatusCode') == 200 else None
+            
         elif request.get('type') == 'update':
-            # TODO
-            key = r[0]
+            if self.storage_strategy=='ddb':
+                response = add_to_ddb(self.ddb, self.table_name, data)
+            elif self.storage_strategy=='s3':
+                response = add_to_bucket(self.s3_client, self.storage_bucket_name, data, widget_key)
+            key = r[0] if response.get('ResponseMetadata').get('HTTPStatusCode') == 200 else None
+        
         elif request.get('type') == 'delete':
-            # TODO
+            if self.storage_strategy=='ddb':
+                response = remove_from_ddb(self.ddb, self.table_name, {'id': data.get('id')})
+            elif self.storage_strategy=='s3':
+                response = remove_from_bucket(self.s3_resource, self.storage_bucket_name, widget_key)
             key = r[0]
         else:
             return "Invalid Request Type"
         
         if key:
-            resp = delete_request(self.s3, self.bucket.name, key)
-            # print("Delete: {}".format(resp))
+            if self.requests_resource == 's3':
+                remove_from_bucket(self.s3_resource, self.bucket.name, key)
+            else:
+                remove_from_queue(self.sqs_client, self.queue_url, key)
         
         return response
         

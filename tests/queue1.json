@@ -1,0 +1,6 @@
+{
+    'MessageId': '3294a34d-f3a1-43ac-9b9a-40a0312e48c3',
+    'ReceiptHandle': 'AQEBJZH5Vx6jQ4KTWEGtk0GQjiDbxEolelNBvYSH7z7GDqUikt16a9/xeffw1mss5H+zKkY/J2Yf9v49yz5Z8xAbEBVwTEATZ0J7gdalFk+eYbly13N8DI9D42x8yLeo5UnC0127Ikrduogp6A4VfnvYWE8TDQoG/IIXY+C5pwX7kNWvg8xuccas1Enp2mK5D1zIbA2HNxOir/0crA5XRGJbOQz6wGDaEZbhmzT2JlUFzBeisCXLoWMImZrE9vS4UkwacnwxSV3++ivMIq4ICU19dGAbgb0P1F9ft4V3u8xpOO8c9+pzUJItKg/64YORQjjfYmUIMdbdb/fcFNZg+Qwyv3b0VLxWyGLJI+PNIR5ad/8/a28Sb6420Rn3Tk/HnDJugy9wxMuo0pwN/vHHcPFjUw==',
+    'MD5OfBody': 'd9477e9c0f3cabb1f685dddf316ad9d8',
+    'Body': '{"type":"create","requestId":"a50a587a-7b0e-4b43-9ff0-5bddf5868e4b","widgetId":"2749ca4a-0fab-4c7e-adc6-400ba25b25fe","owner":"Sue Smith","label":"","description":"","otherAttributes":[{"name":"color","value":"green"},{"name":"size","value":"359"},{"name":"size-unit","value":"cm"},{"name":"height-unit","value":"cm"},{"name":"price","value":"8.84"}]}'
+}
