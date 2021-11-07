@@ -1,4 +1,4 @@
-from connector import add_to_bucket, add_to_ddb, remove_from_bucket, remove_from_ddb, remove_from_queue
+from consumer.connector import *
 
 class Worker:
     def __init__(self, session, bucket, storage_strategy, requests_resource) -> None:

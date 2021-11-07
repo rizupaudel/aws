@@ -1,7 +1,7 @@
-from connector import *
-from consumer_worker import Worker
+from consumer.connector import *
+from consumer.worker import Worker
 import time
-from log import log
+from consumer.log import log
 
 def consumer(args, aws_credentials):
     # arg parse

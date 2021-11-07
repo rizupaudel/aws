@@ -3,11 +3,9 @@
 
 import argparse
 from configparser import ConfigParser
-from consumer import consumer
+from consumer.consumer import consumer
 
 config = ConfigParser()
-
-
 
 # Command line argument implementation
 def get_args() -> dict:
