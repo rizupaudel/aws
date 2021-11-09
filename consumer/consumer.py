@@ -1,7 +1,8 @@
-from consumer.connector import *
 from consumer.worker import Worker
-import time
+from consumer.connector import *
 from consumer.log import log
+import time
+
 
 def consumer(args, aws_credentials):
     # arg parse
@@ -11,6 +12,7 @@ def consumer(args, aws_credentials):
     queue_url = args.get('query_url') if args.get('query_url') else 'https://sqs.us-east-1.amazonaws.com/699670510392/cs5260-requests'
     storage_strategy = args.get('storage_strategy')
     requests_resource = args.get('resource')
+
 
     session = get_aws_session(aws_credentials)
     s3_resource = session.resource('s3')

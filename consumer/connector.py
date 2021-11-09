@@ -3,7 +3,7 @@ import json
 
 
 def get_aws_session(credentials):
-    return Session(**credentials)
+    return Session(**credentials, region_name='us-east-1')
 
 def get_bucket(s3, bucket_name):
     # get bucket object from s3

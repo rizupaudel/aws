@@ -1,16 +1,14 @@
 #To run the progam
 # python main.py -ss ddb -r s3
 
+import os
 import argparse
-from configparser import ConfigParser
 from consumer.consumer import consumer
-
-config = ConfigParser()
+from configparser import ConfigParser
 
 # Command line argument implementation
 def get_args() -> dict:
     parser = argparse.ArgumentParser(description='Consumer: Process Widget Requests')
-
     parser.add_argument('-ss','--storage-strategy', help='Storage strategy', type=str, choices=['ddb', 's3'], required=True)
     parser.add_argument('-r','--resource', help='Resources to use', type=str, choices=['sqs', 's3'], required=True)
     parser.add_argument('-rbn','--request-bucket-name', help='Request Bucket Name', type=str)
@@ -21,10 +19,19 @@ def get_args() -> dict:
     args = parser.parse_args()
     return vars(args)
 
-
 def get_credentials():
-    config.read('.config')
-    return dict(config['aws_credentials'])
+    credentials = {}
+    aki = os.environ.get('aws_access_key_id')
+    sak = os.environ.get('aws_secret_access_key')
+    st = os.environ.get('aws_session_token')
+    if aki and sak and st:
+        credentials = {'aws_access_key_id': aki, 'aws_secret_access_key': sak, 'aws_session_token': st}
+    else:
+        config = ConfigParser()
+        config.read('.config')
+        credentials = dict(config['default'])
+    
+    return credentials
 
 
 def main():
