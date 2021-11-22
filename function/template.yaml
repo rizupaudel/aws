@@ -4,5 +4,5 @@ Resources:
   HelloNameFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.lambda_handler
+      Handler: lambda_function.lambda_handler
       Runtime: python3.9
