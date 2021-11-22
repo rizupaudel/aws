@@ -33,7 +33,6 @@ def consumer(args, aws_credentials):
         else:
             log.info(f'Fetching: requests from {requests_resource};')
 
-        
         # process widget requests 
         if widget_requests:
             for wr in widget_requests:
@@ -56,4 +55,4 @@ def consumer(args, aws_credentials):
         time.sleep(5)
         log.info('Sleeping for next 5 seconds;')
 
-    print("-----------------------")
+    print("----------------------------------")
