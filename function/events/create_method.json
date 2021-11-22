@@ -1,0 +1,31 @@
+{
+    "body": {
+        "type": "create",
+        "requestId": "358df0bc-28aa-4635-8368-0e6b20ac2b7f",
+        "widgetId": "f2568720-583c-44da-ad63-4d8f13bfe04b",
+        "owner": "John Jones",
+        "label": "TR",
+        "description": "KHWQBKUQPWYPJJHDVBZKVFYUPCAYLWFKMKASOISOSKDMHFCBODZJJAOEHNFHIIFLFIWKTSQNPNLBZ",
+        "otherAttributes": [{
+                "name": "size-unit",
+                "value": "cm"
+            },
+            {
+                "name": "height",
+                "value": "207"
+            },
+            {
+                "name": "length",
+                "value": "821"
+            },
+            {
+                "name": "length-unit",
+                "value": "cm"
+            },
+            {
+                "name": "note",
+                "value": "PAJUUNTSDDERZEMHQPHFFTNLMTJSZKJTFSDNVIICHGKEQQUNTCALXTQFKEIUYCGPQLYJ"
+            }
+        ]
+    }
+}

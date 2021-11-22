@@ -1,0 +1,31 @@
+{
+    "body": {
+        "type": "update",
+        "requestId": "d5b57a67-06dc-4b3b-a087-c7360a4e35ed",
+        "widgetId": "0860c9ec-9e4e-4b40-8e96-1bafd2d336c5",
+        "owner": "Mary Matthews",
+        "description": "ALMNHYXULPQWUEUVIDPMEFFCEDIPXFGJWSBDGATFKVHQKMYBXYUTBSWHTAJFRYRSMRRATMBLP",
+        "otherAttributes": [{
+            "name": "size",
+            "value": "772"
+        }, {
+            "name": "height",
+            "value": "657"
+        }, {
+            "name": "height-unit",
+            "value": "cm"
+        }, {
+            "name": "width-unit",
+            "value": "cm"
+        }, {
+            "name": "quantity",
+            "value": "335"
+        }, {
+            "name": "vendor",
+            "value": "EKKXMOYRGAJXFKBVI"
+        }, {
+            "name": "note",
+            "value": "YONCJVFJDDSXYWYEGDZYGQAAKRDHIPFBXNDMFZKBXKPUWIREFTFVOTCEXMUDKAHNCPXXXGRDYZGDKRAKFFHXIYJNKYCQDUSPVWULLMTHWOPMHVZSOBUVVEIZTJZTRVTPAPKHBVRQYHNGFSNTNKYKYNHBHQJOQSTDVAKWLZSCLRIOATMKPJOYVCZPFTUIWMLOSZABJZLCUMCLIDFRANWUYZODJIDXXVDQLTDHQTVJQMPUNZSJMEADZFUJJEKFQEPXYANLUXNUMMDATWWQHOTEQVCBAXILCMATRYHIGWCOMKMXFMQGWZBWJBFXLFHIDRMEMBCCRDYRBQOETAXQEHFIZQWKKFDKJQPQSICSHEEOPNZQUMWQXXFXKFUIRHTLWGQQJFHZJOIVE"
+        }]
+    }
+}
